@@ -11,3 +11,5 @@
 * npm install morgan
 
 * npm install handlebar
+
+* static file and scss

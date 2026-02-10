@@ -7,6 +7,10 @@ const app = express();
 const port = 3000;
 // https:localhost:3000
 
+
+app.use(express.static(path.join(__dirname,'public'))); 
+// http://localhost:3000/img/logo.jpg
+
 //https
 app.use(morgan("combined"));
 
