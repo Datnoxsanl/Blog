@@ -1,36 +1,48 @@
 {
-  "name": "blog",
-  "version": "1.0.0",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "nodemon --inspect src/index.js",
-    "watch": "sass src/resources/scss/app.scss src/public/css/app.css --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Datnoxsanl/Blog.git"
-  },
-  "keywords": [
-    "blog",
-    "Datnoxsanl",
-    "nodejs",
-    "expressjs"
-  ],
-  "author": "DatNoxSanl",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Datnoxsanl/Blog/issues"
-  },
-  "homepage": "https://github.com/Datnoxsanl/Blog#readme",
-  "description": "",
-  "dependencies": {
-    "express": "^5.1.0",
-    "express-handlebars": "^8.0.1",
-    "morgan": "^1.10.1",
-    "nodemon": "^3.1.11"
-  },
-  "devDependencies": {
-    "sass": "^1.97.3"
-  }
+    "name": "blog",
+    "version": "1.0.0",
+    "main": "src/index.js",
+    "scripts": {
+        "beauty": "lint-staged",
+        "start": "nodemon --inspect src/index.js",
+        "watch": "sass src/resources/scss/app.scss src/public/css/app.css --watch",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Datnoxsanl/Blog.git"
+    },
+    "keywords": [
+        "blog",
+        "Datnoxsanl",
+        "nodejs",
+        "expressjs"
+    ],
+    "author": "DatNoxSanl",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Datnoxsanl/Blog/issues"
+    },
+    "homepage": "https://github.com/Datnoxsanl/Blog#readme",
+    "lint-staged": {
+        "*.{js,json,hbs,css,scss,html}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "description": "",
+    "dependencies": {
+        "express": "^5.1.0",
+        "express-handlebars": "^8.0.1",
+        "morgan": "^1.10.1",
+        "nodemon": "^3.1.11"
+    },
+    "devDependencies": {
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
+        "prettier": "^3.8.1",
+        "sass": "^1.97.3"
+    }
 }
