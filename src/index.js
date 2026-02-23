@@ -1,31 +1,41 @@
-const express = require("express");
-const path = require("path");
-const morgan = require("morgan");
-const { engine } = require("express-handlebars");
+import express from "express";
+import path from "path";
+import morgan from "morgan";
+import { engine } from "express-handlebars";
+import { fileURLToPath } from "url";
+
+import route from "./routes/index.js";
+import { connectDB } from "./config/db/index.js";
+
 const app = express();
 const port = 3000;
-// https:localhost:3000
 
-const route = require("./routes");
+// Fix __dirname trong ES Module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+// Connect DB
+await connectDB();
+
+// Static file
 app.use(express.static(path.join(__dirname, "public")));
-// http://localhost:3000/img/logo.jpg
 
+// Body parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//https
+// Logger
 app.use(morgan("combined"));
 
-//template engine
-app.engine( "hbs",engine({  extname: ".hbs",}),);
+// Template engine
+app.engine("hbs", engine({ extname: ".hbs" }));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views"));
 
-// Routes init
+// Routes
 route(app);
 
-//127.0.0.1
+// Start server
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
