@@ -55,3 +55,7 @@ await mongoose.connect("mongodb://localhost:27017/blog-test");
 ```
 
 Tạo model — `src/app/models/Courses`
+
+
+
+## JSON Viewer / Route methods / App listen log / Resource path
