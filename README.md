@@ -59,3 +59,7 @@ Tạo model — `src/app/models/Courses`
 
 
 ## JSON Viewer / Route methods / App listen log / Resource path
+
+## Read From DB
+
+handlebarjs

@@ -1,15 +1,25 @@
-const BlogCourses = require("../models/Courses");
-
+const Courses = require("../models/Courses");
+const { multipleMongooseToObject } = require("../../util/mongoose");
 class SiteController {
   // [GET] /home
-async index(req, res) {
-    try {
-      const courses = await BlogCourses.find({});
-      res.json(courses);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+  // async index(req, res, next) {
+  //   try {
+  //     const courses = await Courses.find({}).lean();
+  //     res.render("home", { courses });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
+  index(req, res, next) {
+    Courses.find({})
+      .then((courses) => {
+        res.render("home", {
+          courses: multipleMongooseToObject(courses),
+        });
+      })
+      .catch(next);
   }
+
   // [GET] /search
   search(req, res) {
     res.render("search");
