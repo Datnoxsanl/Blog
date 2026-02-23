@@ -1,37 +1,57 @@
-Node-Bog
+# Node-Bog
 
-- npm init
-  => file package.json
+## Setup
 
-- npm install express
+- `npm init` => tạo file `package.json`
 
-- npm install nodemon
+- `npm install express`
 
-- npm install morgan
+- `npm install nodemon`
 
-- npm install handlebar
+- `npm install morgan`
 
-- static file and scss
+- `npm install handlebars`
 
-- prettier , lint-staged, husky => github
-  npm i prettier lint-staged husky --save-dev
+- Static file và SCSS
 
-Prettirer: [Docs](https://prettier.io/docs/cli.html)
+- Prettier, lint-staged, husky => github
 
+```bash
+npm i prettier lint-staged husky --save-dev
+```
+
+**Prettier:** [Docs](https://prettier.io/docs/cli.html)
+
+```bash
 npm run beauty
+```
 
-lint-staged: example:git status => git add => git status => npm run beauty
+**lint-staged:** `git status` => `git add` => `git status` => `npm run beauty`
 
-husky:
+**Husky:** chạy tự động trước mỗi commit
 
-# Install MongoDB Compass: 
+---
+
+## Cài đặt MongoDB Compass
+
 [https://www.mongodb.com/try](https://www.mongodb.com/try)
 
-# Model trong MVC
+---
 
-install mongoose: npm install mongoose
+## Model trong MVC
+
+Cài đặt mongoose:
+
+```bash
+npm install mongoose
+```
+
 [https://github.com/Automattic/mongoose](https://github.com/Automattic/mongoose)
 
-connect to db:  ``await mongoose.connect("mongodb://localhost:27017/blog-test");``
+Kết nối database — `src/config/db`:
 
-create model: 
+```js
+await mongoose.connect("mongodb://localhost:27017/blog-test");
+```
+
+Tạo model — `src/app/models/Courses`
