@@ -1,0 +1,65 @@
+<div class="container mt-5 mb-5">
+
+  <div class="row">
+
+    <div class="col-lg-8">
+      <h1 class="fw-bold mb-3">
+        {{name}}
+      </h1>
+      <p class="text-muted mb-4">
+        Cập nhật:
+        {{updateAt}}
+      </p>
+
+      <div class="mb-4">
+        <img
+          src="{{image}}"
+          alt="{{course.name}}"
+          class="img-fluid rounded shadow-sm w-100"
+        />
+      </div>
+
+      <div class="course-description">
+        <h4 class="fw-bold mb-3">Mô tả khóa học</h4>
+        <p class="text-secondary">
+          {{description}}
+        </p>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm sticky-top" style="top: 100px;">
+
+        <div class="card-body text-center">
+
+          <h4 class="fw-bold text-danger mb-3">
+            Miễn phí
+          </h4>
+
+          <button class="btn btn-danger w-100 mb-3">
+            Đăng ký học
+          </button>
+
+          <ul class="list-group list-group-flush text-start">
+            <li class="list-group-item">
+              Trình độ: Cơ bản
+            </li>
+            <li class="list-group-item">
+              Hình thức: Online
+            </li>
+            <li class="list-group-item">
+              Thời lượng: 6 giờ
+            </li>
+            <li class="list-group-item">
+              Truy cập trọn đời
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

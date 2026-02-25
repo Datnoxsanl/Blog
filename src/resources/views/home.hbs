@@ -1,21 +1,27 @@
-
-
 <div class="container mt-5">
-  <h1 class="text-center mb-4">Danh sách khóa học</h1>
+  <h1 class="text-center mb-5 fw-bold text-primary">
+    Danh sách khóa học
+  </h1>
 
   <div class="row">
     {{#each courses}}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
-          <img src="{{image}}" class="card-img-top" alt="{{name}}">
-
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">{{name}}</h5>
-            <p class="card-text">{{description}}</p>
-
-            <a href="#" class="btn btn-primary mt-auto">Xem chi tiết</a>
+      <div class="col-md-4 col-sm-6 mb-4">
+        <a href="/courses/{{slug}}" class="card-link">
+          <div class="card h-100 shadow-sm course-card">
+            <img src="{{image}}" class="card-img-top" alt="{{name}}" />
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title fw-bold">
+                {{name}}
+              </h5>
+              <p class="card-text text-muted">
+                {{description}}
+              </p>
+              <span class="btn btn-primary mt-auto">
+                Xem chi tiết
+              </span>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
     {{/each}}
   </div>

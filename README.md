@@ -63,3 +63,7 @@ Tạo model — `src/app/models/Courses`
 ## Read From DB
 
 handlebarjs
+
+## Courses Detail Page
+
+Mongoosejs [](https://mongoosejs.com/docs/queries.html)

@@ -1,16 +1,47 @@
-@import '_variables';
-
 .test {
-    font-size: 1rem;
-    color: red;
+  font-size: 1rem;
+  color: red;
 }
 
 h1 {
-    font-size: 2rem;
-    color: $text-color;
+  font-size: 2rem;
+  color: red;
+}
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.course-card {
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .card-img-top {
-  height: 200px;
+  height: 220px;
   object-fit: cover;
+}
+
+.card-title {
+  font-size: 18px;
+  min-height: 48px;
+}
+
+.card-text {
+  font-size: 14px;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
 }
