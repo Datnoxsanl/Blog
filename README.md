@@ -67,3 +67,12 @@ handlebarjs
 ## Courses Detail Page
 
 Mongoosejs [](https://mongoosejs.com/docs/queries.html)
+
+## Create new courses 
+
+[https://mongoosejs.com/docs/models.html#constructing-documents]
+
+npm i mongoose-slug-generator (https://www.npmjs.com/package/mongoose-slug-generator) -> tự động tạo slug /model/Courses 
+-> KHÔNG tương thích với Mongoose 8
+
+npm install slugify

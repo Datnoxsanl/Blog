@@ -27,6 +27,24 @@ class CoursesController {
   //     next(error);
   //   }
   // }
+
+  // [GET] /courses/create
+  create(req, res, next) {
+    res.render("courses/create");
+  }
+  // [POST] /courses/store -> lưu trữ dữ liệu từ form tạo mới
+  store(req, res, next) {
+    // res.json(req.body);
+    const course = new Courses(req.body);
+    course.save()
+      .then(() => res.redirect("/"))
+      .catch(error => {
+        console.error("Error creating course:", error);
+        res.status(500).send("An error occurred while creating the course.");
+      })
+
+    // res.send("Course created successfully");
+  }
 }
 
 module.exports = new CoursesController();

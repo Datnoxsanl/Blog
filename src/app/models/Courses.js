@@ -1,13 +1,52 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const Schema = mongoose.Schema;
 
-const Courses = new Schema({
-  name: { type: String, maxLength: 255, default: "No name" },
-  description: { type: String, maxLength: 1000 },
-  image: { type: String, maxLength: 255 },
-  createAt: { type: Date, default: Date.now },
-  updateAt: { type: Date, default: Date.now },
+const Courses = new Schema(
+  {
+    name: { type: String, required: true },
+    description: { type: String },
+    image: { type: String },
+
+    slug: {
+      type: String,
+      unique: true,
+    },
+  },
+  { timestamps: true },
+);
+
+// Tự tạo slug trước khi save
+// Courses.pre("save", function (next) {
+//   if (this.name) {
+//     this.slug = slugify(this.name, {
+//       lower: true,
+//       strict: true,
+//     });
+//   }
+// }
+// );
+Courses.pre("save", async function () {
+  // tạo slug gốc
+  const baseSlug = slugify(this.name, {
+    lower: true,
+    strict: true,
+  });
+
+  // kiểm tra đã tồn tại chưa
+  const existingCourse = await mongoose.models.Courses.findOne({
+    slug: baseSlug,
+  });
+
+  if (!existingCourse) {
+    // ✅ chưa tồn tại → dùng luôn
+    this.slug = baseSlug;
+  } else {
+    // ❌ đã tồn tại → thêm random
+    const randomString = Math.random().toString(36).substring(2, 8);
+    this.slug = baseSlug + "-" + randomString;
+  }
 });
 
 module.exports = mongoose.model("Courses", Courses);
