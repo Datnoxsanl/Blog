@@ -8,6 +8,7 @@ class MeController {
       .then((courses) =>
         res.render("me/stored-courses", {
           courses: multipleMongooseToObject(courses),
+          deleted: req.query.deleted
         }),
       )
       .catch(next);

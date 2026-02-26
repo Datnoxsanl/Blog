@@ -18,7 +18,13 @@
         <td>{{this.level}}</td>
         <td>
           <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
-          <a href="/courses/{{this._id}}/delete" class="btn btn-link">Xóa</a>
+          <a
+            href="/courses/{{this._id}}/delete"
+            class="btn btn-link"
+            data-bs-toggle="modal"
+            data-bs-target="#delete-course-modal"
+            data-id="{{this._id}}"
+          >Xóa</a>
         </td>
 
       </tr>
@@ -26,3 +32,65 @@
 
   </tbody>
 </table>
+
+<!-- confirm delete Modal -->
+<div
+  class="modal fade"
+  id="delete-course-modal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Xác nhận xóa khóa
+          học</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa khóa học này không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="btn-delete-course">Xóa bỏ</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+        >Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Delete hidden form --}}
+<form name="delete-course-form"  method="POST"></form>
+
+
+<script>
+  const exampleModal = document.getElementById('delete-course-modal')
+  const btnDelete = document.getElementById('btn-delete-course')
+
+  let courseId = null
+  var deleteCourseForm = document.forms['delete-course-form']
+
+  if (exampleModal) {
+    exampleModal.addEventListener('show.bs.modal', event => {
+      const button = event.relatedTarget
+      courseId = button.getAttribute('data-id')
+      console.log('ID khóa học:', courseId)
+    })
+  }
+
+  // Khi bấm confirm xóa
+  btnDelete.onclick = () => {
+    console.log('Xóa course id =', courseId)
+     deleteCourseForm.action = '/courses/' + courseId + '?_method=DELETE'
+      deleteCourseForm.submit()
+  }
+</script>

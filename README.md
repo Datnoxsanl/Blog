@@ -56,8 +56,6 @@ await mongoose.connect("mongodb://localhost:27017/blog-test");
 
 Tạo model — `src/app/models/Courses`
 
-
-
 ## JSON Viewer / Route methods / App listen log / Resource path
 
 ## Read From DB
@@ -68,11 +66,11 @@ handlebarjs
 
 Mongoosejs [](https://mongoosejs.com/docs/queries.html)
 
-## Create new courses 
+## Create new courses
 
 [https://mongoosejs.com/docs/models.html#constructing-documents]
 
-npm i mongoose-slug-generator (https://www.npmjs.com/package/mongoose-slug-generator) -> tự động tạo slug /model/Courses 
+npm i mongoose-slug-generator (https://www.npmjs.com/package/mongoose-slug-generator) -> tự động tạo slug /model/Courses
 -> KHÔNG tương thích với Mongoose 8
 
 npm install slugify
@@ -81,8 +79,8 @@ npm install slugify
 
 [https://handlebarsjs.com/guide/] -> đánh index hiện thị từ 1 (handlebarJS)
 
-express-handlebar -> 
-`` app.engine(
+express-handlebar ->
+`app.engine(
   "hbs",
   engine({
     extname: ".hbs",
@@ -90,14 +88,24 @@ express-handlebar ->
      sum: (a, b) => a + b,
     },
   }),
-); ``
+);`
 
- `` <th scope="row">{{ sum @index 1 }}</th> ``
+`<th scope="row">{{ sum @index 1 }}</th>`
 
-method cần dùng PUT/PATCH -> [https://expressjs.com/en/resources/middleware/method-override.html] 
+method cần dùng PUT/PATCH -> [https://expressjs.com/en/resources/middleware/method-override.html]
 npm install method-override
 const methodOverride = require('method-override')
-// override with POST having ?_method=DELETE
-app.use(methodOverride('_method')
+// override with POST having ?\_method=DELETE
+app.use(methodOverride('\_method')
 
 lưu lại vào db sau khi sửa -> mongoose: updateOne()
+
+## Delete course
+
+`          <a
+            href="/courses/{{this._id}}/delete"
+            class="btn btn-link"
+            data-bs-toggle="modal"
+            data-bs-target="#delete-course-modal"
+            data-id="{{this._id}}"
+          >Xóa</a>`
