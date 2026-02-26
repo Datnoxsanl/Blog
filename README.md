@@ -76,3 +76,28 @@ npm i mongoose-slug-generator (https://www.npmjs.com/package/mongoose-slug-gener
 -> KHÔNG tương thích với Mongoose 8
 
 npm install slugify
+
+## update courses
+
+[https://handlebarsjs.com/guide/] -> đánh index hiện thị từ 1 (handlebarJS)
+
+express-handlebar -> 
+`` app.engine(
+  "hbs",
+  engine({
+    extname: ".hbs",
+    helpers: {
+     sum: (a, b) => a + b,
+    },
+  }),
+); ``
+
+ `` <th scope="row">{{ sum @index 1 }}</th> ``
+
+method cần dùng PUT/PATCH -> [https://expressjs.com/en/resources/middleware/method-override.html] 
+npm install method-override
+const methodOverride = require('method-override')
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method')
+
+lưu lại vào db sau khi sửa -> mongoose: updateOne()

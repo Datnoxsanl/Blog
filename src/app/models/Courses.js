@@ -8,7 +8,10 @@ const Courses = new Schema(
     name: { type: String, required: true },
     description: { type: String },
     image: { type: String },
-
+    level: {
+      type: String,
+      default: "Cơ bản", 
+    },
     slug: {
       type: String,
       unique: true,

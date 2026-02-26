@@ -1,0 +1,38 @@
+<h1>Sửa khóa học</h1>
+
+<form method="POST" action="/courses/{{course._id}}/?_method=PUT">
+
+  <div class="mb-3">
+    <label class="form-label">Tên khóa học</label>
+    <input
+      type="text"
+      name="name"
+      class="form-control"
+      value="{{course.name}}"
+      required
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Mô tả khóa học</label>
+    <textarea
+      name="description"
+      class="form-control"
+      required
+    >{{course.description}}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Level</label>
+    <input
+      type="text"
+      name="level"
+      class="form-control"
+      value="{{course.level}}"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">
+    Cập nhật khóa học
+  </button>
+
+</form>

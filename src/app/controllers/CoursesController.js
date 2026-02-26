@@ -36,14 +36,35 @@ class CoursesController {
   store(req, res, next) {
     // res.json(req.body);
     const course = new Courses(req.body);
-    course.save()
+    course
+      .save()
       .then(() => res.redirect("/"))
-      .catch(error => {
+      .catch((error) => {
         console.error("Error creating course:", error);
         res.status(500).send("An error occurred while creating the course.");
-      })
+      });
 
     // res.send("Course created successfully");
+  }
+
+  // [GET] /courses/:id/edit
+  edit(req, res, next) {
+    // res.render("courses/edit");
+    Courses.findById(req.params.id)
+      .then((course) => {
+        res.render("courses/edit", {
+          course: mongooseToObject(course),
+        });
+      })
+      .catch(next);
+  }
+
+  // [PUT] /courses/:id
+  update(req, res, next) {
+    // res.json(req.body);
+    Courses.updateOne({ _id: req.params.id }, req.body)
+      .then(() => res.redirect("/me/stored/courses"))
+      .catch(next);
   }
 }
 
