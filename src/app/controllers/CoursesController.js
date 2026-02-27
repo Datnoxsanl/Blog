@@ -67,10 +67,24 @@ class CoursesController {
       .catch(next);
   }
 
-  // [DELETE] /courses/:id
+  // [DELETE] /courses/:id (Soft delete)
   delete(req, res, next) {
+    Courses.delete({ _id: req.params.id })
+      .then(() => res.redirect("/me/stored/courses"))
+      .catch(next);
+  }
+
+  // [PATCH] /courses/:id/restore
+  restore(req, res, next) {
+    Courses.restore({ _id: req.params.id })
+      .then(() => res.redirect("/me/trash/courses"))
+      .catch(next);
+  }
+
+  // [DELETE] /courses/:id/force
+  forceDelete(req, res, next) {
     Courses.deleteOne({ _id: req.params.id })
-      .then(() => res.redirect('/me/stored/courses?deleted=true'))
+      .then(() => res.redirect("/me/trash/courses"))
       .catch(next);
   }
 }

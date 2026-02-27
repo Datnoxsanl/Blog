@@ -109,3 +109,14 @@ lưu lại vào db sau khi sửa -> mongoose: updateOne()
             data-bs-target="#delete-course-modal"
             data-id="{{this._id}}"
           >Xóa</a>`
+
+## soft delete
+delete 
+restore
+force delete
+
+mongoose delete plugin: npm install mongoose-delete [https://github.com/dsanel/mongoose-delete]
+
+soft delete -> khi xóa thêm 1 filed delete = true ? false
+restore -> update -> PATCH chuyển trạng thái delete = true -> false
+force -> xóa vĩnh viễn sử dụng deleteOne()

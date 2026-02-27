@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-
+var mongooseDelete = require("mongoose-delete");
 const Schema = mongoose.Schema;
 
 const Courses = new Schema(
@@ -10,7 +10,7 @@ const Courses = new Schema(
     image: { type: String },
     level: {
       type: String,
-      default: "Cơ bản", 
+      default: "Cơ bản",
     },
     slug: {
       type: String,
@@ -41,15 +41,16 @@ Courses.pre("save", async function () {
   const existingCourse = await mongoose.models.Courses.findOne({
     slug: baseSlug,
   });
-
   if (!existingCourse) {
-    // ✅ chưa tồn tại → dùng luôn
     this.slug = baseSlug;
   } else {
-    // ❌ đã tồn tại → thêm random
     const randomString = Math.random().toString(36).substring(2, 8);
     this.slug = baseSlug + "-" + randomString;
   }
+});
+Courses.plugin(mongooseDelete, {
+  deletedAt: true,
+  overrideMethods: "all",
 });
 
 module.exports = mongoose.model("Courses", Courses);
