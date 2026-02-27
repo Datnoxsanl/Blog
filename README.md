@@ -111,7 +111,8 @@ lưu lại vào db sau khi sửa -> mongoose: updateOne()
           >Xóa</a>`
 
 ## soft delete
-delete 
+
+delete
 restore
 force delete
 
