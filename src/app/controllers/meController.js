@@ -4,14 +4,31 @@ const { multipleMongooseToObject } = require("../../util/mongoose");
 class MeController {
   // [GET] /me/stored/courses
   storedCourses(req, res, next) {
-    Courses.find({})
-      .then((courses) =>
+    Promise.all([Courses.find({}), Courses.countDocumentsDeleted()])
+      .then(([courses, deletedCount]) => {
         res.render("me/stored-courses", {
           courses: multipleMongooseToObject(courses),
-          deleted: req.query.deleted,
-        }),
-      )
+          deletedCount,
+        });
+      })
       .catch(next);
+
+    // Courses.countDocumentsDeleted()
+    //   .then((deletedCount) => {
+    //     console.log(`Number of deleted courses: ${deletedCount}`);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error counting deleted courses:", error);
+    //   });
+
+    // Courses.find({})
+    //   .then((courses) =>
+    //     res.render("me/stored-courses", {
+    //       courses: multipleMongooseToObject(courses),
+    //       deleted: req.query.deleted,
+    //     }),
+    //   )
+    //   .catch(next);
     // res.render("me/stored-courses");
   }
 
