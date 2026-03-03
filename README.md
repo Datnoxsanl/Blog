@@ -121,3 +121,9 @@ mongoose delete plugin: npm install mongoose-delete [https://github.com/dsanel/m
 soft delete -> khi xóa thêm 1 filed delete = true ? false
 restore -> update -> PATCH chuyển trạng thái delete = true -> false
 force -> xóa vĩnh viễn sử dụng deleteOne()
+
+## Select all with check box 
+
+xóa tất cả
+khôi phục tất cả
+xóa vĩnh viễn tất cả
