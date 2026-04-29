@@ -33,11 +33,20 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Tên khóa học</th>
+      <th scope="col">
+        Tên khóa học
+        {{!-- // sort asc --}}
+         {{{sortable "name" _sort}}}
+        {{!-- <a href="?_sort&column=name&type=asc" > 
+          <i class="fa-solid fa-sort"></i>
+          </a>  --}}
+      </th>
+       {{!-- // sort desc --}}
       <th scope="col">Thời gian xóa</th>
       <th scope="col" colspan="2">Level</th>
     </tr>
   </thead>
+ 
   <tbody>
     {{#each courses}}
       <tr>

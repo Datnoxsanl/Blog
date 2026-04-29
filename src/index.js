@@ -8,7 +8,7 @@ import route from "./routes/index.js";
 import { connectDB } from "./config/db/index.js";
 
 import methodOverride from "method-override";
-
+import sortMiddleware from "./app/middleware/sortMiddleware.js";
 const app = express();
 const port = 3000;
 
@@ -36,6 +36,24 @@ app.engine(
     extname: ".hbs",
     helpers: {
      sum: (a, b) => a + b,
+     sortable: function (field, sort) {
+      const sortType = field === sort.column ? sort.type : 'default';
+      const icons = {
+        default: 'fa-solid fa-sort',
+        asc: 'fa-solid fa-sort-up',
+        desc: 'fa-solid fa-sort-down',
+      };
+      const types = {
+        default: 'asc',
+        asc: 'desc',
+        desc: 'asc',
+      };
+      const icon = icons[sortType];
+      const type = types[sortType];
+      return `<a href="?_sort&column=${field}&type=${type}">
+                <i class="${icon}"></i>
+              </a>`;
+    },
     },
   }),
 );
@@ -44,6 +62,7 @@ app.set("views", path.join(__dirname, "resources", "views"));
 
 // Method override
 app.use(methodOverride('_method'))
+app.use(sortMiddleware);
 
 // Routes
 route(app);

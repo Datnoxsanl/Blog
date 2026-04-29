@@ -127,3 +127,12 @@ force -> xóa vĩnh viễn sử dụng deleteOne()
 xóa tất cả
 khôi phục tất cả
 xóa vĩnh viễn tất cả
+
+
+## Sort middleware
+
+a type = asc/ desc
+
+Method Res.locals in Express
+
+tấn công XSS   {{sortable "name" _sort}} thành {{{sortable "name" _sort}}}
