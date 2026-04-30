@@ -48,6 +48,21 @@ Courses.pre("save", async function () {
     this.slug = baseSlug + "-" + randomString;
   }
 });
+
+// custom query helper
+Courses.query.sortable = function (req) {
+      if (Object.prototype.hasOwnProperty.call(req.query, "_sort")) {
+      // res.json({ message: "Sorting courses..." });
+      const isValidtype = ["asc", "desc"].includes(req.query.type);
+      return this.sort({
+        // name: 'asc'
+        [req.query.column]: isValidtype ? (req.query.type === "asc" ? 1 : -1) : 0,
+
+      });
+    }
+    return this;
+  };
+
 Courses.plugin(mongooseDelete, {
   deletedAt: true,
   overrideMethods: "all",

@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 
 import route from "./routes/index.js";
 import { connectDB } from "./config/db/index.js";
-
+import helpers from "./helpers/handlebars.js";
 import methodOverride from "method-override";
 import sortMiddleware from "./app/middleware/sortMiddleware.js";
 const app = express();
@@ -34,27 +34,7 @@ app.engine(
   "hbs",
   engine({
     extname: ".hbs",
-    helpers: {
-     sum: (a, b) => a + b,
-     sortable: function (field, sort) {
-      const sortType = field === sort.column ? sort.type : 'default';
-      const icons = {
-        default: 'fa-solid fa-sort',
-        asc: 'fa-solid fa-sort-up',
-        desc: 'fa-solid fa-sort-down',
-      };
-      const types = {
-        default: 'asc',
-        asc: 'desc',
-        desc: 'asc',
-      };
-      const icon = icons[sortType];
-      const type = types[sortType];
-      return `<a href="?_sort&column=${field}&type=${type}">
-                <i class="${icon}"></i>
-              </a>`;
-    },
-    },
+    helpers: helpers,
   }),
 );
 app.set("view engine", "hbs");
