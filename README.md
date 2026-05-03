@@ -1,146 +1,297 @@
-# Node-Bog
+# Blog Project
+
+## Overview
+
+Đây là một dự án Blog nhỏ xây dựng bằng Node.js, Express và MongoDB (Mongoose). Dự án đã được tổ chức lại theo cấu trúc chuẩn doanh nghiệp, với tách biệt rõ ràng giữa:
+
+- `controllers/` — xử lý request và response
+- `services/` — business logic
+- `models/` — schema Mongoose
+- `routes/` — định nghĩa các đường dẫn
+- `middlewares/` — xử lý chung giữa các request
+- `validators/` — xác thực dữ liệu đầu vào
+- `utils/` — helper dùng chung
+- `config/` — cấu hình và constants
+
+## Features
+
+- Quản lý khóa học (Courses)
+- Tạo, sửa, xóa, xem chi tiết khóa học
+- Soft delete / restore / force delete
+- Sort courses trên trang quản lý
+- Handlebars làm template engine
+- Middleware xử lý lỗi và sort
+- Logging chuyên nghiệp với `logger.js`
+- Môi trường cấu hình bằng `.env`
+
+## Requirements
+
+- Node.js 16+
+- npm
+- MongoDB đang chạy trên `mongodb://localhost:27017`
 
 ## Setup
 
-- `npm init` => tạo file `package.json`
+1. Cài đặt dependencies:
 
-- `npm install express`
+```bash
+npm install
+```
 
-- `npm install nodemon`
+2. Sao chép file cấu hình môi trường:
 
-- `npm install morgan`
+```bash
+cp .env.example .env
+```
 
-- `npm install handlebars`
+3. Chỉnh sửa `.env` nếu cần:
 
-- Static file và SCSS
+```env
+NODE_ENV=development
+PORT=3000
+HOST=localhost
+MONGODB_URI=mongodb://localhost:27017/blog_edu
+MONGODB_NAME=blog_edu
+LOG_LEVEL=info
+CORS_ORIGIN=*
+```
 
-- Prettier, lint-staged, husky => github
+4. Khởi động ứng dụng:
+
+```bash
+npm start
+```
+
+## Available Scripts
+
+- `npm start` — chạy ứng dụng bằng `nodemon`
+- `npm run beauty` — format lại file bằng Prettier
+- `npm run watch` — build SCSS thành CSS và theo dõi thay đổi
+
+## Static files & SCSS
+
+- Thư mục tĩnh: `src/public/`
+- SCSS nguồn: `src/resources/scss/`
+- Biên dịch SCSS sang CSS bằng `npm run watch`
+- Tập trung giữ `static assets` nguyên vẹn và cập nhật CSS tự động
+
+## Formatting & Git Hooks
+
+Dự án đã sử dụng `prettier`, `lint-staged`, và `husky` để đảm bảo mã nguồn sạch trước khi commit.
 
 ```bash
 npm i prettier lint-staged husky --save-dev
 ```
 
-**Prettier:** [Docs](https://prettier.io/docs/cli.html)
+- **Prettier:** [Docs](https://prettier.io/docs/cli.html)
+- **Lint-staged:** format file staged trước khi commit
+- **Husky:** chạy script tự động trước commit
 
-```bash
-npm run beauty
-```
+Thông thường workflow:
 
-**lint-staged:** `git status` => `git add` => `git status` => `npm run beauty`
+1. `git status`
+2. `git add <files>`
+3. `git status`
+4. `npm run beauty`
 
-**Husky:** chạy tự động trước mỗi commit
+## MongoDB Compass
 
----
-
-## Cài đặt MongoDB Compass
+Nếu cần quản lý database bằng GUI, dùng MongoDB Compass:
 
 [https://www.mongodb.com/try](https://www.mongodb.com/try)
 
----
+## Mongoose & MVC Model
 
-## Model trong MVC
-
-Cài đặt mongoose:
+Dự án dùng `mongoose` để kết nối MongoDB và định nghĩa schema.
 
 ```bash
 npm install mongoose
 ```
 
-[https://github.com/Automattic/mongoose](https://github.com/Automattic/mongoose)
-
-Kết nối database — `src/config/db`:
+Kết nối database trong `src/config/db/index.js`:
 
 ```js
-await mongoose.connect("mongodb://localhost:27017/blog-test");
+await mongoose.connect('mongodb://localhost:27017/blog_edu');
 ```
 
-Tạo model — `src/app/models/Courses`
+Model course hiện tại nằm ở `src/app/models/Courses.js`.
 
-## JSON Viewer / Route methods / App listen log / Resource path
+## Courses Model & Slug
 
-## Read From DB
+Khóa học (`Courses`) được xây dựng với:
 
-handlebarjs
+- `name`
+- `description`
+- `image`
+- `level`
+- `slug`
 
-## Courses Detail Page
+Slug được tạo tự động bằng `slugify`:
 
-Mongoosejs [](https://mongoosejs.com/docs/queries.html)
-
-## Create new courses
-
-[https://mongoosejs.com/docs/models.html#constructing-documents]
-
-npm i mongoose-slug-generator (https://www.npmjs.com/package/mongoose-slug-generator) -> tự động tạo slug /model/Courses
--> KHÔNG tương thích với Mongoose 8
-
+```bash
 npm install slugify
+```
 
-## update courses
+Plugin `mongoose-sequence` được dùng để tăng `_id` tự động:
 
-[https://handlebarsjs.com/guide/] -> đánh index hiện thị từ 1 (handlebarJS)
+```bash
+npm install --save mongoose-sequence
+```
 
-express-handlebar ->
-`app.engine(
-  "hbs",
-  engine({
-    extname: ".hbs",
-    helpers: {
-     sum: (a, b) => a + b,
-    },
-  }),
-);`
+Plugin `mongoose-delete` dùng cho soft delete:
 
-`<th scope="row">{{ sum @index 1 }}</th>`
+```bash
+npm install mongoose-delete
+```
 
-method cần dùng PUT/PATCH -> [https://expressjs.com/en/resources/middleware/method-override.html]
+## Update courses
+
+Sử dụng Handlebars để hiển thị form chỉnh sửa và điều khiển index:
+
+```hbs
+<th scope="row">{{ sum @index 1 }}</th>
+```
+
+Xử lý PUT/PATCH trong form:
+
+```bash
 npm install method-override
-const methodOverride = require('method-override')
-// override with POST having ?\_method=DELETE
-app.use(methodOverride('\_method')
+```
 
-lưu lại vào db sau khi sửa -> mongoose: updateOne()
+```js
+import methodOverride from 'method-override';
+app.use(methodOverride('_method'));
+```
+
+Sau khi sửa, cập nhật dữ liệu trong MongoDB bằng `updateOne()` hoặc `findByIdAndUpdate()`.
 
 ## Delete course
 
-`          <a
-            href="/courses/{{this._id}}/delete"
-            class="btn btn-link"
-            data-bs-toggle="modal"
-            data-bs-target="#delete-course-modal"
-            data-id="{{this._id}}"
-          >Xóa</a>`
+Mẫu link xóa khóa học có thể được hiển thị như sau:
 
-## soft delete
+```html
+<a
+  href="/courses/{{this._id}}/delete"
+  class="btn btn-link"
+  data-bs-toggle="modal"
+  data-bs-target="#delete-course-modal"
+  data-id="{{this._id}}"
+>Xóa</a>
+```
 
-delete
-restore
-force delete
+## Soft delete
 
-mongoose delete plugin: npm install mongoose-delete [https://github.com/dsanel/mongoose-delete]
+Dự án hiện hỗ trợ:
 
-soft delete -> khi xóa thêm 1 filed delete = true ? false
-restore -> update -> PATCH chuyển trạng thái delete = true -> false
-force -> xóa vĩnh viễn sử dụng deleteOne()
+- `delete` — soft delete, đưa vào thùng rác
+- `restore` — khôi phục từ thùng rác
+- `force delete` — xóa vĩnh viễn
 
-## Select all with check box 
+Logic soft delete dùng `mongoose-delete`:
 
-xóa tất cả
-khôi phục tất cả
-xóa vĩnh viễn tất cả
+- Soft delete: `delete({ _id })`
+- Restore: `restore({ _id })`
+- Force delete: `deleteOne({ _id })`
 
+## Select all with checkbox
+
+Các chức năng hỗ trợ:
+
+- xóa tất cả
+- khôi phục tất cả
+- xóa vĩnh viễn tất cả
+
+Phần này có thể được mở rộng bằng checkbox trong view và action bulk trên server.
 
 ## Sort middleware
 
-a type = asc/ desc
+Phần sort dùng query `?_sort&column=<field>&type=<asc|desc>`.
 
-Method Res.locals in Express
+Trong Express middleware, `res.locals._sort` được truyền vào view để hiển thị trạng thái sort.
 
-tấn công XSS   {{sortable "name" _sort}} thành {{{sortable "name" _sort}}}
+### XSS note
 
-thêm sortable sau 
+Khi dùng helper sort trong Handlebars, hãy lưu ý:
 
--> xử lý khi nhiều request cùng 1 lúc tránh lỗi
-upsert mongodb 
-mongoose-sequence-github
+```hbs
+{{sortable "name" _sort}}
+```
 
- npm install --save mongoose-sequence
+Không nên dùng `{{{sortable "name" _sort}}}` nếu helper không escape dữ liệu.
+Helper hiện tại đã sử dụng `Handlebars.escapeExpression(...)` để tránh XSS.
+
+## Project Structure
+
+```text
+src/
+├── app/
+│   ├── controllers/
+│   ├── models/
+│   └── middleware/
+├── config/
+│   ├── constants/
+│   ├── config.js
+│   └── db/
+├── common/
+├── helpers/
+├── middlewares/
+├── routes/
+├── services/
+├── validators/
+├── utils/
+└── resources/
+```
+
+## Architecture
+
+Ứng dụng theo mô hình MVC mở rộng với Service Layer:
+
+- `routes/` định nghĩa URL
+- `controllers/` xử lý HTTP request và render view/redirect
+- `services/` chứa logic xử lý dữ liệu và tương tác với database
+- `models/` định nghĩa schema Mongoose
+- `middlewares/` xử lý lỗi, validation và sort
+
+## Important Files
+
+- `src/index.js` — entry point của ứng dụng
+- `src/config/config.js` — cấu hình môi trường và app
+- `src/config/db/index.js` — kết nối MongoDB
+- `src/common/ApiError.js` — custom error class
+- `src/common/ApiResponse.js` — response format chuẩn
+- `src/services/CourseService.js` — business logic khóa học
+- `src/middlewares/errorHandler.js` — error handling trung tâm
+- `src/validators/courseValidator.js` — Joi validation schema
+
+## Notes
+
+- Tất cả code đã được chuyển sang ES Modules.
+- Dữ liệu và cấu hình được tách khỏi code, dùng `.env`.
+- Routes và controller đã được tổ chức rõ ràng để dễ bảo trì.
+- Thêm Logging và Error Handling ở mọi bước quan trọng.
+
+## Development Tips
+
+- Nếu muốn thêm chức năng mới, hãy tạo:
+  1. Model trong `src/app/models/`
+  2. Service trong `src/services/`
+  3. Validator trong `src/validators/`
+  4. Controller trong `src/app/controllers/`
+  5. Route trong `src/routes/`
+
+- Sử dụng `logger.js` để ghi log thay vì `console.log()`.
+- Nếu cần thêm middleware, đặt vào `src/middlewares/`.
+
+## References
+
+- [Express](https://expressjs.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [Handlebars](https://handlebarsjs.com/)
+- [dotenv](https://github.com/motdotla/dotenv)
+- [Joi](https://joi.dev/)
+
+---
+
+## License
+
+ISC

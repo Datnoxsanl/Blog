@@ -1,6 +1,7 @@
 {
     "name": "blog",
     "version": "1.0.0",
+    "type": "module",
     "main": "src/index.js",
     "scripts": {
         "beauty": "lint-staged",
@@ -34,8 +35,10 @@
     },
     "description": "",
     "dependencies": {
+        "dotenv": "^16.6.1",
         "express": "^5.1.0",
         "express-handlebars": "^8.0.1",
+        "joi": "^17.13.3",
         "method-override": "^3.0.0",
         "mongoose": "^9.2.1",
         "mongoose-delete": "^1.0.7",

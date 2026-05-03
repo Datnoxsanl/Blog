@@ -1,102 +1,183 @@
-const Courses = require("../models/Courses");
-const { mongooseToObject } = require("../../util/mongoose");
+/**
+ * @fileoverview Courses Controller
+ * @description Handle HTTP requests related to courses
+ * Contains request handling and response logic (thin layer)
+ */
 
+import CourseService from '../../services/CourseService.js';
+import { mongooseToObject, mongooseArrayToObject } from '../../utils/mongoose.js';
+import logger from '../../utils/logger.js';
+
+/**
+ * CoursesController Class
+ * Handles all HTTP requests related to course operations
+ */
 class CoursesController {
-  // [GET] /courses/:slug
-  show(req, res, next) {
-    Courses.findOne({ slug: req.params.slug })
-      .then((course) => {
-        // res.json(Courses);
-        if (!course) return res.status(404).send("Course not found");
-        res.render("courses/show", mongooseToObject(course));
-      })
-      .catch(next);
-    // res.send("COURSE DETAIL: " + req.params.slug);
+  /**
+   * [GET] /courses/:slug
+   * Display course details by slug
+   */
+  async show(req, res, next) {
+    try {
+      const { slug } = req.params;
+
+      logger.debug('Getting course by slug', { slug });
+
+      const course = await CourseService.getCourseBySlug(slug);
+
+      res.render('courses/show', mongooseToObject(course));
+    } catch (error) {
+      next(error);
+    }
   }
 
-  // async show(req, res, next) {
-  //   try {
-  //     const course = await Courses.findOne({
-  //       slug: req.params.slug,
-  //     }).lean();
-  //     if (!course) {
-  //       return res.status(404).send("Course not found");
-  //     }
-  //     res.render("courses/show", { course });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
-
-  // [GET] /courses/create
-  create(req, res, next) {
-    res.render("courses/create");
-  }
-  // [POST] /courses/store -> lưu trữ dữ liệu từ form tạo mới
-  store(req, res, next) {
-    // res.json(req.body);
-    const course = new Courses(req.body);
-    course
-      .save()
-      .then(() => res.redirect("/me/stored/courses"))
-      .catch(next);
-
-    // res.send("Course created successfully");
+  /**
+   * [GET] /courses/create
+   * Display course creation form
+   */
+  create(req, res) {
+    res.render('courses/create');
   }
 
-  // [GET] /courses/:id/edit
-  edit(req, res, next) {
-    // res.render("courses/edit");
-    Courses.findById(req.params.id)
-      .then((course) => {
-        res.render("courses/edit", {
-          course: mongooseToObject(course),
-        });
-      })
-      .catch(next);
+  /**
+   * [POST] /courses/store
+   * Store newly created course to database
+   */
+  async store(req, res, next) {
+    try {
+      logger.debug('Creating new course', { data: req.body });
+
+      await CourseService.createCourse(req.body);
+
+      // Redirect to stored courses page
+      res.redirect('/me/stored/courses');
+    } catch (error) {
+      next(error);
+    }
   }
 
-  // [PUT] /courses/:id
-  update(req, res, next) {
-    // res.json(req.body);
-    Courses.updateOne({ _id: req.params.id }, req.body)
-      .then(() => res.redirect("/me/stored/courses"))
-      .catch(next);
+  /**
+   * [GET] /courses/:id/edit
+   * Display course edit form
+   */
+  async edit(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      logger.debug('Getting course for edit', { id });
+
+      const course = await CourseService.getCourseById(id);
+
+      res.render('courses/edit', {
+        course: mongooseToObject(course),
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 
-  // [DELETE] /courses/:id (Soft delete)
-  delete(req, res, next) {
-    Courses.delete({ _id: req.params.id })
-      .then(() => res.redirect("/me/stored/courses"))
-      .catch(next);
+  /**
+   * [PUT] /courses/:id
+   * Update course information
+   */
+  async update(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      logger.debug('Updating course', { id, data: req.body });
+
+      await CourseService.updateCourse(id, req.body);
+
+      // Redirect to stored courses page
+      res.redirect('/me/stored/courses');
+    } catch (error) {
+      next(error);
+    }
   }
 
-  // [PATCH] /courses/:id/restore
-  restore(req, res, next) {
-    Courses.restore({ _id: req.params.id })
-      .then(() => res.redirect("/me/trash/courses"))
-      .catch(next);
+  /**
+   * [DELETE] /courses/:id
+   * Soft delete course (move to trash)
+   */
+  async delete(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      logger.debug('Deleting course (soft delete)', { id });
+
+      await CourseService.deleteCourse(id);
+
+      // Redirect to stored courses page
+      res.redirect('/me/stored/courses');
+    } catch (error) {
+      next(error);
+    }
   }
 
-  // [DELETE] /courses/:id/force
-  forceDelete(req, res, next) {
-    Courses.deleteOne({ _id: req.params.id })
-      .then(() => res.redirect("/me/trash/courses"))
-      .catch(next);
+  /**
+   * [PATCH] /courses/:id/restore
+   * Restore soft deleted course from trash
+   */
+  async restore(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      logger.debug('Restoring course', { id });
+
+      await CourseService.restoreCourse(id);
+
+      // Redirect to trash page
+      res.redirect('/me/trash/courses');
+    } catch (error) {
+      next(error);
+    }
   }
 
-  // [POST] /courses/handel-form-actions
-  handelFormActions(req, res, next) {
-    switch (req.body.action) {
-      case "delete":
-        Courses.delete({ _id: { $in: req.body.coursesIds } })
-          .then(() => res.redirect("/me/stored/courses"))
-          .catch(next);
-        break;
-      default:
-        res.json({ message: "Action is invalid!" });
+  /**
+   * [DELETE] /courses/:id/force
+   * Permanently delete course (cannot be restored)
+   */
+  async forceDelete(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      logger.debug('Force deleting course', { id });
+
+      await CourseService.forceDeleteCourse(id);
+
+      // Redirect to trash page
+      res.redirect('/me/trash/courses');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * [POST] /courses/handle-form-actions
+   * Handle bulk actions on courses (delete, restore, etc.)
+   */
+  async handleFormActions(req, res, next) {
+    try {
+      const { action, coursesIds } = req.body;
+
+      logger.debug('Handling form action', { action, courseCount: coursesIds.length });
+
+      // Handle different actions
+      switch (action) {
+        case 'delete':
+          await CourseService.bulkDeleteCourses(coursesIds);
+          res.redirect('/me/stored/courses');
+          break;
+
+        default:
+          // If action is invalid, let error handler catch it
+          throw new Error(`Invalid action: ${action}`);
+      }
+    } catch (error) {
+      next(error);
     }
   }
 }
 
-module.exports = new CoursesController();
+// Export singleton instance
+export default new CoursesController();

@@ -1,10 +1,23 @@
-const express = require('express');
+/**
+ * @fileoverview Site Routes
+ * @description Define general site routes (home, search, etc.)
+ */
+
+import express from 'express';
+import siteController from '../app/controllers/siteController.js';
+
 const router = express.Router();
 
-const siteController = require('../app/controllers/siteController');
+/**
+ * General Site Routes
+ */
 
+// Display search page
+// Route: GET /search
 router.get('/search', siteController.search);
 
+// Display home page
+// Route: GET /
 router.get('/', siteController.index);
 
-module.exports = router;
+export default router;

@@ -1,12 +1,23 @@
-const express = require('express');
+/**
+ * @fileoverview News Routes
+ * @description Define all routes related to news pages
+ */
+
+import express from 'express';
+import newsController from '../app/controllers/NewsController.js';
+
 const router = express.Router();
 
-const newsController = require('../app/controllers/NewsController');
+/**
+ * News Routes
+ */
 
-newsController.index;
-
+// Display news detail by slug
+// Route: GET /news/:slug
 router.get('/:slug', newsController.show);
 
+// Display news listing page
+// Route: GET /news
 router.get('/', newsController.index);
 
-module.exports = router;
+export default router;

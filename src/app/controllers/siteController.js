@@ -1,29 +1,45 @@
-const Courses = require("../models/Courses");
-const { multipleMongooseToObject } = require("../../util/mongoose");
+/**
+ * @fileoverview Site Controller
+ * @description Handle HTTP requests for main site pages
+ */
+
+import Courses from '../models/Courses.js';
+import { mongooseArrayToObject } from '../../utils/mongoose.js';
+import logger from '../../utils/logger.js';
+
+/**
+ * SiteController Class
+ * Handles general site pages and navigation
+ */
 class SiteController {
-  // [GET] /home
-  // async index(req, res, next) {
-  //   try {
-  //     const courses = await Courses.find({}).lean();
-  //     res.render("home", { courses });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
-  index(req, res, next) {
-    Courses.find({})
-      .then((courses) => {
-        res.render("home", {
-          courses: multipleMongooseToObject(courses),
-        });
-      })
-      .catch(next);
+  /**
+   * [GET] /
+   * Display home page with all available courses
+   */
+  async index(req, res, next) {
+    try {
+      logger.debug('Loading home page');
+
+      // Fetch all courses from database
+      const courses = await Courses.find({});
+
+      res.render('home', {
+        courses: mongooseArrayToObject(courses),
+      });
+    } catch (error) {
+      logger.error('Error loading home page', { error: error.message });
+      next(error);
+    }
   }
 
-  // [GET] /search
+  /**
+   * [GET] /search
+   * Display search page
+   */
   search(req, res) {
-    res.render("search");
+    res.render('search');
   }
 }
 
-module.exports = new SiteController();
+// Export singleton instance
+export default new SiteController();

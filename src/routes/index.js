@@ -1,13 +1,30 @@
-const newsRouter = require('./news');
-const siteRouter = require('./site');
-const coursesRouter = require('./courses');
-const meRouter = require('./me');
+/**
+ * @fileoverview Main Route Configuration
+ * @description Setup and organize all application routes
+ */
 
-function route(app) {
-    app.use('/news', newsRouter);
-    app.use('/me', meRouter);
-    app.use('/courses', coursesRouter);
-    app.use('/', siteRouter);
-}
+import newsRouter from './news.js';
+import siteRouter from './site.js';
+import coursesRouter from './courses.js';
+import meRouter from './me.js';
 
-module.exports = route;
+/**
+ * Configure all routes for the application
+ * 
+ * @param {object} app - Express application instance
+ */
+const route = (app) => {
+  // News routes
+  app.use('/news', newsRouter);
+
+  // User-specific routes (My Courses)
+  app.use('/me', meRouter);
+
+  // Course management routes
+  app.use('/courses', coursesRouter);
+
+  // General site routes (should be last - catches everything else)
+  app.use('/', siteRouter);
+};
+
+export default route;

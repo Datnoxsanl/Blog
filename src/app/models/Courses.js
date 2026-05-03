@@ -1,76 +1,147 @@
-const mongoose = require("mongoose");
-const slugify = require("slugify");
-var mongooseDelete = require("mongoose-delete");
-const AutoIncrement = require('mongoose-sequence')(mongoose);
-const Schema = mongoose.Schema;
+/**
+ * @fileoverview Course Model
+ * @description Mongoose schema and model for Course collection
+ */
 
-const Courses = new Schema(
+import mongoose from 'mongoose';
+import slugify from 'slugify';
+import mongooseDelete from 'mongoose-delete';
+import mongooseSequence from 'mongoose-sequence';
+import { COURSE_LEVELS, SLUG_CONFIG, SORT_OPTIONS } from '../../config/constants/index.js';
+
+const Schema = mongoose.Schema;
+const AutoIncrement = mongooseSequence(mongoose);
+
+/**
+ * Course Schema Definition
+ * Defines the structure and validation rules for Course documents
+ */
+const courseSchema = new Schema(
   {
-    _id: { type: Number },
-    name: { type: String, required: true },
-    description: { type: String },
-    image: { type: String },
+    // Custom numeric ID for auto-increment
+    _id: {
+      type: Number,
+    },
+
+    // Course Name - Required
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+
+    // Course Description - Optional
+    description: {
+      type: String,
+      trim: true,
+    },
+
+    // Course Image URL - Optional
+    image: {
+      type: String,
+      trim: true,
+    },
+
+    // Course Level/Difficulty
     level: {
       type: String,
-      default: "Cơ bản",
+      enum: Object.values(COURSE_LEVELS),
+      default: COURSE_LEVELS.BASIC,
     },
+
+    // Auto-generated URL-friendly slug
     slug: {
       type: String,
       unique: true,
+      lowercase: true,
+      sparse: true,
     },
   },
-  { 
+  {
+    // Schema options
     _id: false,
-    timestamps: true },
+    timestamps: true, // Add createdAt and updatedAt fields
+    collection: 'courses',
+  },
 );
 
-// Tự tạo slug trước khi save
-// Courses.pre("save", function (next) {
-//   if (this.name) {
-//     this.slug = slugify(this.name, {
-//       lower: true,
-//       strict: true,
-//     });
-//   }
-// }
-// );
-Courses.pre("save", async function () {
-  // tạo slug gốc
+/**
+ * Pre-save middleware: Generate unique slug before saving
+ * Ensures slug is URL-friendly and unique
+ */
+courseSchema.pre('save', async function generateSlug() {
+  // Only generate slug if name has changed or is new
+  if (!this.isModified('name')) {
+    return;
+  }
+
+  // Create base slug from course name
   const baseSlug = slugify(this.name, {
-    lower: true,
-    strict: true,
+    lower: SLUG_CONFIG.LOWERCASE,
+    strict: SLUG_CONFIG.STRICT,
   });
 
-  // kiểm tra đã tồn tại chưa
-  const existingCourse = await mongoose.models.Courses.findOne({
+  // Check if slug already exists
+  const Course = mongoose.models.Courses || mongoose.model('Courses', courseSchema);
+  const existingCourse = await Course.findOne({
     slug: baseSlug,
+    _id: { $ne: this._id }, // Exclude current document from check
   });
+
+  // If slug is unique, use it; otherwise append random string
   if (!existingCourse) {
     this.slug = baseSlug;
   } else {
-    const randomString = Math.random().toString(36).substring(2, 8);
-    this.slug = baseSlug + "-" + randomString;
+    const randomString = Math.random().toString(36).substring(2, SLUG_CONFIG.RANDOM_STRING_LENGTH + 2);
+    this.slug = `${baseSlug}-${randomString}`;
   }
 });
 
-// custom query helper
-Courses.query.sortable = function (req) {
-      if (Object.prototype.hasOwnProperty.call(req.query, "_sort")) {
-      // res.json({ message: "Sorting courses..." });
-      const isValidtype = ["asc", "desc"].includes(req.query.type);
-      return this.sort({
-        // name: 'asc'
-        [req.query.column]: isValidtype ? (req.query.type === "asc" ? 1 : -1) : 0,
+/**
+ * Query helper: Sortable
+ * Enables sorting of course queries based on request parameters
+ * 
+ * @param {object} req - Express request object containing sort parameters
+ * @returns {Query} Mongoose query with sort applied
+ */
+courseSchema.query.sortable = function sortableQuery(req) {
+  // Check if sorting is requested
+  if (Object.prototype.hasOwnProperty.call(req.query, '_sort')) {
+    // Validate sort type
+    const isValidType = [SORT_OPTIONS.ASCENDING, SORT_OPTIONS.DESCENDING].includes(req.query.type);
 
-      });
-    }
-    return this;
-  };
+    // Apply sort to query
+    return this.sort({
+      [req.query.column]: isValidType
+        ? (req.query.type === SORT_OPTIONS.ASCENDING ? 1 : -1)
+        : 0,
+    });
+  }
 
-  Courses.plugin(AutoIncrement, { id: "course_id_counter", inc_field: "_id" });
-Courses.plugin(mongooseDelete, {
-  deletedAt: true,
-  overrideMethods: "all",
+  return this;
+};
+
+/**
+ * Apply Plugins
+ */
+
+// Auto-increment plugin for numeric _id
+courseSchema.plugin(AutoIncrement, {
+  id: 'course_id_counter',
+  inc_field: '_id',
 });
 
-module.exports = mongoose.model("Courses", Courses);
+// Soft delete plugin
+courseSchema.plugin(mongooseDelete, {
+  deletedAt: true,
+  overrideMethods: 'all', // Override all Mongoose methods to respect soft delete
+});
+
+/**
+ * Export Model
+ * Create and export the Course model based on the schema
+ */
+const Courses = mongoose.model('Courses', courseSchema);
+
+export default Courses;
