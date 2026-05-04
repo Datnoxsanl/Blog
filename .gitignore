@@ -8,3 +8,7 @@ node_modules/
 .env
 .env.*
 .env.example
+
+REFACTORING_GUIDE.md
+ARCHITECTURE.md
+REFACTORING_SUMMARY.md
