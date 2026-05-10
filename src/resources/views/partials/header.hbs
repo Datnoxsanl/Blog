@@ -59,6 +59,7 @@
                             <p class="mb-0 text-muted" style="font-size:12px;">{{currentUser.email}}</p>
                         </li>
                         <li><hr class="dropdown-divider my-1" /></li>
+                        {{#if isAdmin}}
                         <li>
                             <a class="dropdown-item" href="/courses/create">
                                 <i class="fas fa-plus-circle me-2 text-success"></i>Đăng khóa học
@@ -66,7 +67,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item" href="/me/stored/courses">
-                                <i class="fas fa-book me-2 text-primary"></i>Khóa học của tôi
+                                <i class="fas fa-book me-2 text-primary"></i>Quản lý khóa học
                             </a>
                         </li>
                         <li>
@@ -75,6 +76,7 @@
                             </a>
                         </li>
                         <li><hr class="dropdown-divider my-1" /></li>
+                        {{/if}}
                         <li>
                             <form action="/logout" method="POST">
                                 <button type="submit" class="dropdown-item text-danger">

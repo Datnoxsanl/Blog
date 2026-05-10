@@ -5,7 +5,7 @@
 
 import express from 'express';
 import coursesController from '../app/controllers/CoursesController.js';
-import { requireAuth } from '../middlewares/authMiddleware.js';
+import { requireAuth, authorize } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -14,37 +14,37 @@ const router = express.Router();
  * Follows RESTful conventions where possible
  */
 
-// Display course creation form — requires login
+// Display course creation form — requires admin
 // Route: GET /courses/create
-router.get('/create', requireAuth, coursesController.create);
+router.get('/create', requireAuth, authorize('admin'), coursesController.create);
 
-// Store newly created course — requires login
+// Store newly created course — requires admin
 // Route: POST /courses/store
-router.post('/store', requireAuth, coursesController.store);
+router.post('/store', requireAuth, authorize('admin'), coursesController.store);
 
-// Handle bulk actions (delete, restore, etc.) — requires login
+// Handle bulk actions (delete, restore, etc.) — requires admin
 // Route: POST /courses/handle-form-actions
-router.post('/handle-form-actions', requireAuth, coursesController.handleFormActions);
+router.post('/handle-form-actions', requireAuth, authorize('admin'), coursesController.handleFormActions);
 
-// Update course — requires login
+// Update course — requires admin
 // Route: PUT /courses/:id
-router.put('/:id', requireAuth, coursesController.update);
+router.put('/:id', requireAuth, authorize('admin'), coursesController.update);
 
-// Soft delete course — requires login
+// Soft delete course — requires admin
 // Route: DELETE /courses/:id
-router.delete('/:id', requireAuth, coursesController.delete);
+router.delete('/:id', requireAuth, authorize('admin'), coursesController.delete);
 
-// Permanently delete course — requires login
+// Permanently delete course — requires admin
 // Route: DELETE /courses/:id/force
-router.delete('/:id/force', requireAuth, coursesController.forceDelete);
+router.delete('/:id/force', requireAuth, authorize('admin'), coursesController.forceDelete);
 
-// Restore soft-deleted course — requires login
+// Restore soft-deleted course — requires admin
 // Route: PATCH /courses/:id/restore
-router.patch('/:id/restore', requireAuth, coursesController.restore);
+router.patch('/:id/restore', requireAuth, authorize('admin'), coursesController.restore);
 
-// Display course edit form — requires login
+// Display course edit form — requires admin
 // Route: GET /courses/:id/edit
-router.get('/:id/edit', requireAuth, coursesController.edit);
+router.get('/:id/edit', requireAuth, authorize('admin'), coursesController.edit);
 
 // Display course details by slug — public
 // Route: GET /courses/:slug

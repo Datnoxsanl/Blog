@@ -5,7 +5,7 @@
 
 import express from 'express';
 import meController from '../app/controllers/meController.js';
-import { requireAuth } from '../middlewares/authMiddleware.js';
+import { requireAuth, authorize } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -14,12 +14,12 @@ const router = express.Router();
  * All routes require authentication
  */
 
-// Display all stored (not deleted) courses
+// Display all stored (not deleted) courses — requires admin
 // Route: GET /me/stored/courses
-router.get('/stored/courses', requireAuth, meController.storedCourses);
+router.get('/stored/courses', requireAuth, authorize('admin'), meController.storedCourses);
 
-// Display all soft-deleted (trashed) courses
+// Display all soft-deleted (trashed) courses — requires admin
 // Route: GET /me/trash/courses
-router.get('/trash/courses', requireAuth, meController.trashCourses);
+router.get('/trash/courses', requireAuth, authorize('admin'), meController.trashCourses);
 
 export default router;

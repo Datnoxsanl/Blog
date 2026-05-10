@@ -85,9 +85,10 @@ const initializeApp = async () => {
       }),
     );
 
-    // Inject authenticated user into every view
+    // Inject authenticated user and role flags into every view
     app.use((req, res, next) => {
       res.locals.currentUser = req.session.user || null;
+      res.locals.isAdmin = req.session.user?.role === 'admin';
       next();
     });
 
