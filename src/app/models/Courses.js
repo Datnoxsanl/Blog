@@ -57,6 +57,13 @@ const courseSchema = new Schema(
       lowercase: true,
       sparse: true,
     },
+
+    // Course publication status
+    status: {
+      type: String,
+      enum: ['draft', 'published', 'archived'],
+      default: 'published',
+    },
   },
   {
     // Schema options

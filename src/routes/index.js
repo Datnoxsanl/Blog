@@ -8,6 +8,7 @@ import siteRouter from './site.js';
 import coursesRouter from './courses.js';
 import meRouter from './me.js';
 import authRouter from './auth.js';
+import adminRouter from './admin.js';
 
 /**
  * Configure all routes for the application
@@ -17,6 +18,9 @@ import authRouter from './auth.js';
 const route = (app) => {
     // Auth routes (login, logout)
     app.use('/', authRouter);
+
+    // Admin routes (protected: admin only)
+    app.use('/admin', adminRouter);
 
     // News routes
     app.use('/news', newsRouter);

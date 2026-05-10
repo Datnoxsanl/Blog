@@ -1,0 +1,117 @@
+<aside class="admin-sidebar" id="adminSidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+        <a href="/admin/dashboard" class="sidebar-brand-link">
+            <div class="sidebar-brand-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <span class="sidebar-brand-text">Blog Admin</span>
+        </a>
+    </div>
+
+    <!-- Admin profile -->
+    <div class="sidebar-profile">
+        {{#if currentUser.avatar}}
+        <img src="{{currentUser.avatar}}" alt="{{currentUser.name}}" class="sidebar-profile-avatar" />
+        {{else}}
+        <div class="sidebar-profile-avatar sidebar-profile-fallback">{{currentUser.name.[0]}}</div>
+        {{/if}}
+        <div class="sidebar-profile-info">
+            <p class="sidebar-profile-name">{{truncate currentUser.name 18}}</p>
+            <span class="sidebar-profile-role">
+                <i class="fas fa-shield-halved me-1"></i>Administrator
+            </span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+
+        <div class="nav-section-label">Main</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item {{#if (eq currentPath '/admin/dashboard')}}active{{/if}}">
+                <a href="/admin/dashboard" class="sidebar-menu-link">
+                    <i class="fas fa-tachometer-alt sidebar-menu-icon"></i>
+                    <span class="sidebar-menu-text">Dashboard</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">Courses</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item {{#if (startsWith currentPath '/me/stored')}}active{{/if}}">
+                <a href="/me/stored/courses" class="sidebar-menu-link">
+                    <i class="fas fa-book-open sidebar-menu-icon"></i>
+                    <span class="sidebar-menu-text">Courses</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item {{#if (startsWith currentPath '/courses/create')}}active{{/if}}">
+                <a href="/courses/create" class="sidebar-menu-link">
+                    <i class="fas fa-plus-circle sidebar-menu-icon"></i>
+                    <span class="sidebar-menu-text">Add Course</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item {{#if (startsWith currentPath '/me/trash')}}active{{/if}}">
+                <a href="/me/trash/courses" class="sidebar-menu-link">
+                    <i class="fas fa-trash-can sidebar-menu-icon"></i>
+                    <span class="sidebar-menu-text">Trash</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">Management</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-link sidebar-menu-soon">
+                    <i class="fas fa-users sidebar-menu-icon"></i>
+                    <span class="sidebar-menu-text">Users</span>
+                    <span class="sidebar-badge">Soon</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-link sidebar-menu-soon">
+                    <i class="fas fa-chart-bar sidebar-menu-icon"></i>
+                    <span class="sidebar-menu-text">Analytics</span>
+                    <span class="sidebar-badge">Soon</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-link sidebar-menu-soon">
+                    <i class="fas fa-clock-rotate-left sidebar-menu-icon"></i>
+                    <span class="sidebar-menu-text">Activity Log</span>
+                    <span class="sidebar-badge">Soon</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-label">System</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a href="#" class="sidebar-menu-link sidebar-menu-soon">
+                    <i class="fas fa-gear sidebar-menu-icon"></i>
+                    <span class="sidebar-menu-text">Settings</span>
+                    <span class="sidebar-badge">Soon</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <form action="/logout" method="POST">
+                    <button type="submit" class="sidebar-menu-link sidebar-logout-btn">
+                        <i class="fas fa-right-from-bracket sidebar-menu-icon"></i>
+                        <span class="sidebar-menu-text">Logout</span>
+                    </button>
+                </form>
+            </li>
+        </ul>
+
+    </nav>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+        <a href="/" class="sidebar-footer-link" target="_blank">
+            <i class="fas fa-globe me-2"></i>
+            <span class="sidebar-menu-text">View Site</span>
+        </a>
+    </div>
+
+</aside>

@@ -1,0 +1,490 @@
+<!-- Page Header -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h1 class="page-title">
+            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+        </h1>
+        <p class="page-subtitle">Tổng quan hệ thống Blog Khóa Học</p>
+    </div>
+    <div class="page-header-right">
+        <a href="/courses/create" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus me-1"></i>Add Course
+        </a>
+        <a href="/me/stored/courses" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-book me-1"></i>Manage
+        </a>
+        <a href="/me/trash/courses" class="btn btn-outline-warning btn-sm">
+            <i class="fas fa-trash me-1"></i>Trash
+        </a>
+    </div>
+</div>
+
+<!-- ========== STATS GRID ========== -->
+<div class="stats-grid">
+
+    <div class="stat-card stat-blue">
+        <div class="stat-icon">
+            <i class="fas fa-book"></i>
+        </div>
+        <div class="stat-body">
+            <p class="stat-value">{{stats.totalCourses}}</p>
+            <p class="stat-label">Total Courses</p>
+        </div>
+        <div class="stat-trend">
+            <i class="fas fa-arrow-up text-success me-1"></i>
+            <span class="text-success">{{stats.newCoursesThisWeek}} this week</span>
+        </div>
+    </div>
+
+    <div class="stat-card stat-green">
+        <div class="stat-icon">
+            <i class="fas fa-circle-check"></i>
+        </div>
+        <div class="stat-body">
+            <p class="stat-value">{{stats.coursesByStatus.published}}</p>
+            <p class="stat-label">Published Courses</p>
+        </div>
+        <div class="stat-trend">
+            <span class="text-muted">{{stats.coursesByStatus.draft}} draft</span>
+        </div>
+    </div>
+
+    <div class="stat-card stat-orange">
+        <div class="stat-icon">
+            <i class="fas fa-trash-can"></i>
+        </div>
+        <div class="stat-body">
+            <p class="stat-value">{{stats.deletedCourses}}</p>
+            <p class="stat-label">Deleted Courses</p>
+        </div>
+        <div class="stat-trend">
+            <a href="/me/trash/courses" class="text-warning">View Trash →</a>
+        </div>
+    </div>
+
+    <div class="stat-card stat-purple">
+        <div class="stat-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-body">
+            <p class="stat-value">{{stats.totalUsers}}</p>
+            <p class="stat-label">Total Users</p>
+        </div>
+        <div class="stat-trend">
+            <span class="text-success">{{stats.activeUsers}} active</span>
+        </div>
+    </div>
+
+    <div class="stat-card stat-teal">
+        <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+        </div>
+        <div class="stat-body">
+            <p class="stat-value">{{stats.activeUsers}}</p>
+            <p class="stat-label">Active Users</p>
+        </div>
+        <div class="stat-trend">
+            <span class="text-muted">of {{stats.totalUsers}} total</span>
+        </div>
+    </div>
+
+    <div class="stat-card stat-indigo">
+        <div class="stat-icon">
+            <i class="fas fa-rocket"></i>
+        </div>
+        <div class="stat-body">
+            <p class="stat-value">{{stats.newCoursesThisWeek}}</p>
+            <p class="stat-label">New This Week</p>
+        </div>
+        <div class="stat-trend">
+            <span class="text-muted">Last 7 days</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- ========== CHARTS ROW 1 ========== -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-8 col-lg-7">
+        <div class="panel-card h-100">
+            <div class="panel-card-header">
+                <h2 class="panel-card-title">
+                    <i class="fas fa-chart-line me-2 text-primary"></i>Courses Created per Month
+                </h2>
+                <span class="text-muted small">Last 6 months</span>
+            </div>
+            <div class="panel-card-body">
+                <canvas id="coursesLineChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-5">
+        <div class="panel-card h-100">
+            <div class="panel-card-header">
+                <h2 class="panel-card-title">
+                    <i class="fas fa-layer-group me-2 text-success"></i>Courses by Level
+                </h2>
+            </div>
+            <div class="panel-card-body d-flex align-items-center justify-content-center">
+                <canvas id="levelDoughnutChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== CHARTS ROW 2 ========== -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-8 col-lg-7">
+        <div class="panel-card h-100">
+            <div class="panel-card-header">
+                <h2 class="panel-card-title">
+                    <i class="fas fa-chart-bar me-2 text-purple"></i>Users Registered per Month
+                </h2>
+                <span class="text-muted small">Last 6 months</span>
+            </div>
+            <div class="panel-card-body">
+                <canvas id="usersBarChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-5">
+        <div class="panel-card h-100">
+            <div class="panel-card-header">
+                <h2 class="panel-card-title">
+                    <i class="fas fa-signal me-2 text-warning"></i>Course Status
+                </h2>
+            </div>
+            <div class="panel-card-body d-flex align-items-center justify-content-center">
+                <canvas id="statusPieChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== QUICK ACTIONS ========== -->
+<div class="panel-card mb-4">
+    <div class="panel-card-header">
+        <h2 class="panel-card-title">
+            <i class="fas fa-bolt me-2 text-warning"></i>Quick Actions
+        </h2>
+    </div>
+    <div class="panel-card-body">
+        <div class="quick-actions-grid">
+            <a href="/courses/create" class="quick-action-btn">
+                <div class="quick-action-icon bg-primary-subtle text-primary">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <span>Add New Course</span>
+            </a>
+            <a href="/me/stored/courses" class="quick-action-btn">
+                <div class="quick-action-icon bg-success-subtle text-success">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <span>Manage Courses</span>
+            </a>
+            <a href="/me/trash/courses" class="quick-action-btn">
+                <div class="quick-action-icon bg-warning-subtle text-warning">
+                    <i class="fas fa-trash-restore"></i>
+                </div>
+                <span>View Trash</span>
+            </a>
+            <a href="#usersTable" class="quick-action-btn">
+                <div class="quick-action-icon bg-purple-subtle text-purple">
+                    <i class="fas fa-users-gear"></i>
+                </div>
+                <span>Manage Users</span>
+            </a>
+            <a href="#activityLog" class="quick-action-btn">
+                <div class="quick-action-icon bg-info-subtle text-info">
+                    <i class="fas fa-history"></i>
+                </div>
+                <span>Activity Log</span>
+            </a>
+            <a href="/" target="_blank" class="quick-action-btn">
+                <div class="quick-action-icon bg-secondary-subtle text-secondary">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <span>View Site</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ========== RECENT COURSES TABLE ========== -->
+<div class="panel-card mb-4">
+    <div class="panel-card-header">
+        <h2 class="panel-card-title">
+            <i class="fas fa-book me-2 text-primary"></i>Recent Courses
+        </h2>
+        <a href="/me/stored/courses" class="btn btn-sm btn-outline-primary">View All</a>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="table-filter-bar">
+        <form method="GET" action="/admin/dashboard" class="filter-form" id="courseFilterForm">
+            <div class="filter-search">
+                <i class="fas fa-search filter-search-icon"></i>
+                <input
+                    type="text"
+                    name="search"
+                    class="filter-input"
+                    placeholder="Search courses..."
+                    value="{{filters.search}}"
+                    autocomplete="off"
+                />
+            </div>
+            <select name="level" class="filter-select" onchange="this.form.submit()">
+                <option value="">All Levels</option>
+                <option value="Cơ bản" {{#if (eq filters.level 'Cơ bản')}}selected{{/if}}>Cơ bản</option>
+                <option value="Trung cấp" {{#if (eq filters.level 'Trung cấp')}}selected{{/if}}>Trung cấp</option>
+                <option value="Nâng cao" {{#if (eq filters.level 'Nâng cao')}}selected{{/if}}>Nâng cao</option>
+            </select>
+            <select name="status" class="filter-select" onchange="this.form.submit()">
+                <option value="">All Status</option>
+                <option value="published" {{#if (eq filters.status 'published')}}selected{{/if}}>Published</option>
+                <option value="draft" {{#if (eq filters.status 'draft')}}selected{{/if}}>Draft</option>
+                <option value="archived" {{#if (eq filters.status 'archived')}}selected{{/if}}>Archived</option>
+            </select>
+            <select name="sort" class="filter-select" onchange="this.form.submit()">
+                <option value="newest" {{#if (eq filters.sort 'newest')}}selected{{/if}}>Newest First</option>
+                <option value="oldest" {{#if (eq filters.sort 'oldest')}}selected{{/if}}>Oldest First</option>
+            </select>
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fas fa-filter me-1"></i>Filter
+            </button>
+            {{#if filters.search}}
+            <a href="/admin/dashboard" class="btn btn-outline-secondary btn-sm">
+                <i class="fas fa-times me-1"></i>Clear
+            </a>
+            {{/if}}
+        </form>
+    </div>
+
+    <div class="panel-card-body p-0">
+        {{#if recentCourses.length}}
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Level</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each recentCourses}}
+                    <tr>
+                        <td>
+                            <div class="course-cell">
+                                <div class="course-thumb">
+                                    {{#if this.image}}
+                                    <img src="{{this.image}}" alt="{{this.name}}" />
+                                    {{else}}
+                                    <div class="course-thumb-fallback">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    {{/if}}
+                                </div>
+                                <div class="course-info">
+                                    <p class="course-name">{{truncate this.name 45}}</p>
+                                    <p class="course-desc">{{truncate this.description 60}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-{{levelBadge this.level}}-subtle text-{{levelBadge this.level}} border border-{{levelBadge this.level}}-subtle fw-normal">
+                                {{this.level}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-dot status-{{defaultTo this.status 'published'}}"></span>
+                            {{statusLabel (defaultTo this.status 'published')}}
+                        </td>
+                        <td class="text-muted small">{{formatDate this.createdAt}}</td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="/courses/{{this.slug}}" class="action-btn action-btn-view" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="/courses/{{this._id}}/edit" class="action-btn action-btn-edit" title="Edit">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <form action="/courses/{{this._id}}?_method=DELETE" method="POST" class="d-inline"
+                                    onsubmit="return confirm('Delete this course?')">
+                                    <button type="submit" class="action-btn action-btn-delete" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {{#if (gt pagination.totalPages 1)}}
+        <div class="table-pagination">
+            <span class="pagination-info">
+                Showing {{add (sub pagination.page 1) 1}}–{{#if (gt (add (sub pagination.page 1) pagination.limit) pagination.total)}}{{pagination.total}}{{else}}{{add (sub pagination.page 1) pagination.limit}}{{/if}} of {{pagination.total}} courses
+            </span>
+            <div class="pagination-btns">
+                {{#if pagination.hasPrev}}
+                <a href="/admin/dashboard?page={{pagination.prevPage}}&search={{filters.search}}&level={{filters.level}}&status={{filters.status}}&sort={{filters.sort}}" class="page-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                {{else}}
+                <span class="page-btn disabled"><i class="fas fa-chevron-left"></i></span>
+                {{/if}}
+
+                <span class="page-current">{{pagination.page}} / {{pagination.totalPages}}</span>
+
+                {{#if pagination.hasNext}}
+                <a href="/admin/dashboard?page={{pagination.nextPage}}&search={{filters.search}}&level={{filters.level}}&status={{filters.status}}&sort={{filters.sort}}" class="page-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {{else}}
+                <span class="page-btn disabled"><i class="fas fa-chevron-right"></i></span>
+                {{/if}}
+            </div>
+        </div>
+        {{/if}}
+
+        {{else}}
+        <div class="empty-state">
+            <i class="fas fa-book-open empty-state-icon"></i>
+            <p class="empty-state-title">No courses found</p>
+            <p class="empty-state-sub">Try adjusting your search or filter</p>
+            <a href="/courses/create" class="btn btn-primary btn-sm mt-2">
+                <i class="fas fa-plus me-1"></i>Add First Course
+            </a>
+        </div>
+        {{/if}}
+    </div>
+</div>
+
+<!-- ========== USERS + ACTIVITY SECTION ========== -->
+<div class="row g-4 mb-4">
+
+    <!-- Users Table -->
+    <div class="col-xl-7" id="usersTable">
+        <div class="panel-card h-100">
+            <div class="panel-card-header">
+                <h2 class="panel-card-title">
+                    <i class="fas fa-users me-2 text-purple"></i>Recent Users
+                </h2>
+            </div>
+            <div class="panel-card-body p-0">
+                {{#if recentUsers.length}}
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each recentUsers}}
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        {{#if this.avatar}}
+                                        <img src="{{this.avatar}}" alt="{{this.name}}" class="user-avatar" />
+                                        {{else}}
+                                        <div class="user-avatar user-avatar-fallback">{{this.name.[0]}}</div>
+                                        {{/if}}
+                                        <div>
+                                            <p class="user-name">{{this.name}}</p>
+                                            <p class="user-email">{{this.email}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{roleBadge this.role}}-subtle text-{{roleBadge this.role}} border border-{{roleBadge this.role}}-subtle fw-normal">
+                                        {{capitalize this.role}}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{#if (neq this.isActive false)}}
+                                    <span class="status-dot status-published"></span>Active
+                                    {{else}}
+                                    <span class="status-dot status-archived"></span>Disabled
+                                    {{/if}}
+                                </td>
+                                <td class="text-muted small">{{formatDate this.createdAt}}</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn action-btn-view" title="View profile" disabled>
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        {{#if (neq this.isActive false)}}
+                                        <button class="action-btn action-btn-delete" title="Deactivate" disabled>
+                                            <i class="fas fa-ban"></i>
+                                        </button>
+                                        {{else}}
+                                        <button class="action-btn action-btn-edit" title="Activate" disabled>
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        {{/if}}
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{else}}
+                <div class="empty-state">
+                    <i class="fas fa-users empty-state-icon"></i>
+                    <p class="empty-state-title">No users yet</p>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Log -->
+    <div class="col-xl-5" id="activityLog">
+        <div class="panel-card h-100">
+            <div class="panel-card-header">
+                <h2 class="panel-card-title">
+                    <i class="fas fa-clock-rotate-left me-2 text-info"></i>Activity Log
+                </h2>
+            </div>
+            <div class="panel-card-body p-0">
+                {{#if recentActivity.length}}
+                <ul class="activity-list">
+                    {{#each recentActivity}}
+                    <li class="activity-item">
+                        <div class="activity-icon bg-{{this.iconColor}}-subtle text-{{this.iconColor}}">
+                            <i class="{{this.icon}}"></i>
+                        </div>
+                        <div class="activity-body">
+                            <p class="activity-desc">{{this.description}}</p>
+                            <span class="activity-time">{{formatDate this.createdAt 'relative'}}</span>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{else}}
+                <div class="empty-state py-5">
+                    <i class="fas fa-history empty-state-icon" style="font-size:2rem;"></i>
+                    <p class="empty-state-title mt-3">No activity yet</p>
+                    <p class="empty-state-sub">Activities will appear here as you manage courses and users.</p>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Chart data embedded as JSON -->
+<script id="dashboardChartData" type="application/json">{{{chartData}}}</script>

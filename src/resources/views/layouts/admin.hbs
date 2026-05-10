@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{pageTitle}} — Blog Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-body">
+
+<div class="admin-wrapper" id="adminWrapper">
+
+    {{> admin-sidebar}}
+
+    <div class="admin-main" id="adminMain">
+
+        <!-- Topbar -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button class="topbar-toggle" id="sidebarToggleBtn" title="Toggle Sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav aria-label="breadcrumb" class="ms-3 d-none d-sm-block">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="/admin/dashboard"><i class="fas fa-home me-1"></i>Admin</a>
+                        </li>
+                        <li class="breadcrumb-item active">{{pageTitle}}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <a href="/" class="topbar-icon-btn" title="View Site" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+                <button class="topbar-icon-btn position-relative" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-dot"></span>
+                </button>
+                <div class="dropdown topbar-user-dropdown">
+                    <button class="topbar-user-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{#if currentUser.avatar}}
+                        <img src="{{currentUser.avatar}}" alt="{{currentUser.name}}" class="topbar-avatar" />
+                        {{else}}
+                        <span class="topbar-avatar-fallback">{{currentUser.name.[0]}}</span>
+                        {{/if}}
+                        <span class="d-none d-md-inline topbar-user-name">{{currentUser.name}}</span>
+                        <i class="fas fa-chevron-down ms-1 d-none d-md-inline" style="font-size:10px;opacity:.6;"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li class="px-3 py-2">
+                            <p class="mb-0 fw-semibold small">{{currentUser.name}}</p>
+                            <p class="mb-0 text-muted" style="font-size:11px;">{{currentUser.email}}</p>
+                        </li>
+                        <li><hr class="dropdown-divider my-1" /></li>
+                        <li><a class="dropdown-item" href="/"><i class="fas fa-globe me-2 text-muted"></i>View Site</a></li>
+                        <li><hr class="dropdown-divider my-1" /></li>
+                        <li>
+                            <form action="/logout" method="POST">
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="fas fa-right-from-bracket me-2"></i>Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="admin-content">
+            {{{body}}}
+        </main>
+
+        <!-- Footer -->
+        <footer class="admin-footer">
+            <span>© 2025 Blog Khóa Học Admin</span>
+            <span class="ms-auto">Powered by Express + Handlebars</span>
+        </footer>
+
+    </div><!-- /admin-main -->
+</div><!-- /admin-wrapper -->
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>
