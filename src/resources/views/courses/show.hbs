@@ -1,65 +1,213 @@
-<div class="container mt-5 mb-5">
+{{!-- ═══════════ COURSE HERO ═══════════ --}}
+<section class="cd-hero">
+    <div class="container">
+        <div class="row align-items-center g-4 py-5">
 
-  <div class="row">
+            {{!-- Left: Text --}}
+            <div class="col-lg-7 order-2 order-lg-1">
 
-    <div class="col-lg-8">
-      <h1 class="fw-bold mb-3">
-        {{name}}
-      </h1>
-      <p class="text-muted mb-4">
-        Cập nhật:
-        {{updateAt}}
-      </p>
+                {{!-- Breadcrumb --}}
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb cd-breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="/"><i class="fas fa-home me-1"></i>Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item active">Khóa học</li>
+                    </ol>
+                </nav>
 
-      <div class="mb-4">
-        <img
-          src="{{image}}"
-          alt="{{course.name}}"
-          class="img-fluid rounded shadow-sm w-100"
-        />
-      </div>
+                {{!-- Badges --}}
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="badge cd-badge-level bg-{{levelBadge level}}">
+                        <i class="fas fa-layer-group me-1"></i>{{level}}
+                    </span>
+                    <span class="badge cd-badge-status bg-{{statusBadge status}} bg-opacity-85">
+                        <i class="fas fa-circle cd-dot-icon me-1"></i>{{statusLabel status}}
+                    </span>
+                </div>
 
-      <div class="course-description">
-        <h4 class="fw-bold mb-3">Mô tả khóa học</h4>
-        <p class="text-secondary">
-          {{description}}
-        </p>
-      </div>
+                {{!-- Title --}}
+                <h1 class="cd-title">{{name}}</h1>
+
+                {{!-- Short Description --}}
+                {{#if description}}
+                    <p class="cd-subtitle">{{truncate description 200}}</p>
+                {{/if}}
+
+                {{!-- Meta Row --}}
+                <div class="d-flex flex-wrap gap-3 cd-meta">
+                    <span><i class="fas fa-calendar-alt me-1"></i>Cập nhật: {{formatDate updatedAt 'short'}}</span>
+                    <span><i class="fas fa-clock me-1"></i>{{formatDate createdAt 'relative'}}</span>
+                    <span><i class="fas fa-signal me-1"></i>{{level}}</span>
+                </div>
+            </div>
+
+            {{!-- Right: Image --}}
+            <div class="col-lg-5 order-1 order-lg-2">
+                {{#if image}}
+                    <div class="cd-hero-img-wrap">
+                        <img src="{{image}}" alt="{{name}}" class="cd-hero-img" />
+                    </div>
+                {{else}}
+                    <div class="cd-hero-img-placeholder">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
     </div>
+</section>
 
-    <!-- RIGHT SIDEBAR -->
-    <div class="col-lg-4">
-      <div class="card shadow-sm sticky-top" style="top: 100px;">
+{{!-- ═══════════ MAIN CONTENT ═══════════ --}}
+<section class="cd-body py-5">
+    <div class="container">
+        <div class="row g-4 g-lg-5">
 
-        <div class="card-body text-center">
+            {{!-- ── Left: Content ── --}}
+            <div class="col-lg-8">
 
-          <h4 class="fw-bold text-danger mb-3">
-            Miễn phí
-          </h4>
+                {{!-- About Section --}}
+                <div class="cd-section mb-4">
+                    <h3 class="cd-section-title">
+                        <span class="cd-icon-box"><i class="fas fa-book-open"></i></span>
+                        Về khóa học
+                    </h3>
+                    <div class="cd-description">
+                        {{#if description}}
+                            {{description}}
+                        {{else}}
+                            <span class="text-muted fst-italic">Chưa có mô tả cho khóa học này.</span>
+                        {{/if}}
+                    </div>
+                </div>
 
-          <button class="btn btn-danger w-100 mb-3">
-            Đăng ký học
-          </button>
+                {{!-- Info Section --}}
+                <div class="cd-section">
+                    <h3 class="cd-section-title">
+                        <span class="cd-icon-box"><i class="fas fa-circle-info"></i></span>
+                        Thông tin khóa học
+                    </h3>
 
-          <ul class="list-group list-group-flush text-start">
-            <li class="list-group-item">
-              Trình độ: Cơ bản
-            </li>
-            <li class="list-group-item">
-              Hình thức: Online
-            </li>
-            <li class="list-group-item">
-              Thời lượng: 6 giờ
-            </li>
-            <li class="list-group-item">
-              Truy cập trọn đời
-            </li>
-          </ul>
+                    <div class="cd-info-grid">
+                        <div class="cd-info-item">
+                            <span class="cd-info-icon"><i class="fas fa-layer-group"></i></span>
+                            <div>
+                                <div class="cd-info-label">Cấp độ</div>
+                                <div class="cd-info-value">{{level}}</div>
+                            </div>
+                        </div>
+                        <div class="cd-info-item">
+                            <span class="cd-info-icon"><i class="fas fa-circle-dot"></i></span>
+                            <div>
+                                <div class="cd-info-label">Trạng thái</div>
+                                <div class="cd-info-value">
+                                    <span class="badge bg-{{statusBadge status}}">{{statusLabel status}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cd-info-item">
+                            <span class="cd-info-icon"><i class="fas fa-calendar-plus"></i></span>
+                            <div>
+                                <div class="cd-info-label">Ngày tạo</div>
+                                <div class="cd-info-value">{{formatDate createdAt 'short'}}</div>
+                            </div>
+                        </div>
+                        <div class="cd-info-item">
+                            <span class="cd-info-icon"><i class="fas fa-rotate"></i></span>
+                            <div>
+                                <div class="cd-info-label">Cập nhật lần cuối</div>
+                                <div class="cd-info-value">{{formatDate updatedAt 'short'}}</div>
+                            </div>
+                        </div>
+                        <div class="cd-info-item">
+                            <span class="cd-info-icon"><i class="fas fa-wifi"></i></span>
+                            <div>
+                                <div class="cd-info-label">Hình thức</div>
+                                <div class="cd-info-value">Online</div>
+                            </div>
+                        </div>
+                        <div class="cd-info-item">
+                            <span class="cd-info-icon"><i class="fas fa-infinity"></i></span>
+                            <div>
+                                <div class="cd-info-label">Truy cập</div>
+                                <div class="cd-info-value">Trọn đời</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{!-- ── Right: Sticky Sidebar ── --}}
+            <div class="col-lg-4">
+                <div class="cd-sidebar-card">
+
+                    {{!-- Thumbnail --}}
+                    {{#if image}}
+                        <div class="cd-sidebar-thumb">
+                            <img src="{{image}}" alt="{{name}}" />
+                        </div>
+                    {{/if}}
+
+                    <div class="cd-sidebar-body">
+
+                        {{!-- Price --}}
+                        <div class="cd-sidebar-price">
+                            <span class="cd-free-label">MIỄN PHÍ</span>
+                        </div>
+
+                        {{!-- Level + Status --}}
+                        <div class="d-flex gap-2 mb-4">
+                            <span class="badge bg-{{levelBadge level}}">{{level}}</span>
+                            <span class="badge bg-{{statusBadge status}}">{{statusLabel status}}</span>
+                        </div>
+
+                        {{!-- Enroll CTA --}}
+                        <button class="btn cd-btn-enroll w-100 mb-3">
+                            <i class="fas fa-graduation-cap me-2"></i>Đăng ký học ngay
+                        </button>
+
+                        {{!-- Admin Actions --}}
+                        {{#if isAdmin}}
+                            <div class="cd-admin-actions">
+                                <a href="/admin/courses/{{_id}}/edit" class="btn cd-btn-edit w-100 mb-2">
+                                    <i class="fas fa-pen me-2"></i>Chỉnh sửa
+                                </a>
+                                <form action="/admin/courses/{{_id}}?_method=DELETE" method="POST">
+                                    <button
+                                        type="submit"
+                                        class="btn cd-btn-delete w-100"
+                                        onclick="return confirm('Bạn có chắc muốn xóa khóa học này?')"
+                                    >
+                                        <i class="fas fa-trash me-2"></i>Xóa khóa học
+                                    </button>
+                                </form>
+                            </div>
+                            <hr class="my-3" />
+                        {{/if}}
+
+                        {{!-- Meta List --}}
+                        <ul class="cd-sidebar-meta">
+                            <li>
+                                <span class="cd-meta-icon"><i class="fas fa-wifi"></i></span>
+                                <span>Học online mọi nơi</span>
+                            </li>
+                            <li>
+                                <span class="cd-meta-icon"><i class="fas fa-infinity"></i></span>
+                                <span>Truy cập trọn đời</span>
+                            </li>
+                            <li>
+                                <span class="cd-meta-icon"><i class="fas fa-certificate"></i></span>
+                                <span>Chứng chỉ hoàn thành</span>
+                            </li>
+                            <li>
+                                <span class="cd-meta-icon"><i class="fas fa-mobile-alt"></i></span>
+                                <span>Học trên mọi thiết bị</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
         </div>
-      </div>
     </div>
-
-  </div>
-
-</div>
+</section>

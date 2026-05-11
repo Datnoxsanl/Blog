@@ -50,3 +50,300 @@ h1 {
   width: 220px;
   margin: 0 16px;
 }
+
+// ─────────────────────────────────────────────
+// COURSE DETAIL  (prefix: cd-)
+// ─────────────────────────────────────────────
+
+// ── Hero ──────────────────────────────────────
+.cd-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #1e3a5f 100%);
+  color: #fff;
+}
+
+.cd-breadcrumb {
+  .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+    &:hover { color: #fff; }
+  }
+  .breadcrumb-item.active { color: rgba(255, 255, 255, 0.38); }
+  .breadcrumb-item + .breadcrumb-item::before { color: rgba(255, 255, 255, 0.25); }
+}
+
+.cd-badge-level,
+.cd-badge-status {
+  font-size: 0.75rem;
+  padding: 0.42em 0.9em;
+  border-radius: 50px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.cd-dot-icon { font-size: 7px; vertical-align: middle; }
+
+.cd-title {
+  font-size: clamp(1.55rem, 4vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.3px;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.cd-subtitle {
+  font-size: 1.04rem;
+  line-height: 1.78;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 1.25rem;
+}
+
+.cd-meta {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  i { color: rgba(255, 255, 255, 0.38); margin-right: 3px; }
+}
+
+.cd-hero-img-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  aspect-ratio: 16 / 9;
+}
+
+.cd-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+  &:hover { transform: scale(1.03); }
+}
+
+.cd-hero-img-placeholder {
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.07);
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  i {
+    font-size: 4.5rem;
+    color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+// ── Content Body ──────────────────────────────
+.cd-body { background: #f8fafc; }
+
+.cd-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  border: 1px solid #e9eef5;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.045);
+}
+
+.cd-section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+  margin-bottom: 1.5rem;
+}
+
+.cd-icon-box {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+}
+
+.cd-description {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: #374151;
+}
+
+// ── Info Grid ─────────────────────────────────
+.cd-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 575.98px) { grid-template-columns: 1fr; }
+}
+
+.cd-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+    transform: translateY(-2px);
+  }
+}
+
+.cd-info-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.cd-info-label {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.cd-info-value {
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+// ── Sidebar Card ──────────────────────────────
+.cd-sidebar-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.11);
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  position: sticky;
+  top: 90px;
+}
+
+.cd-sidebar-thumb {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #f1f5f9;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+    &:hover { transform: scale(1.04); }
+  }
+}
+
+.cd-sidebar-body { padding: 1.5rem; }
+
+.cd-sidebar-price {
+  margin-bottom: 0.75rem;
+  .cd-free-label {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #16a34a;
+    letter-spacing: -0.5px;
+  }
+}
+
+.cd-btn-enroll {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.82rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.2px;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.38);
+  }
+  &:active { transform: translateY(0); }
+}
+
+.cd-admin-actions {
+  .cd-btn-edit {
+    background: #fff;
+    color: #d97706;
+    border: 2px solid #d97706;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    &:hover { background: #d97706; color: #fff; }
+  }
+
+  .cd-btn-delete {
+    background: #fff;
+    color: #ef4444;
+    border: 2px solid #ef4444;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    &:hover { background: #ef4444; color: #fff; }
+  }
+}
+
+.cd-sidebar-meta {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.87rem;
+    color: #475569;
+  }
+}
+
+.cd-meta-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  background: #f1f5f9;
+  color: #64748b;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+}
+
+// ── Responsive ────────────────────────────────
+@media (max-width: 991.98px) {
+  .cd-sidebar-card {
+    position: static;
+    top: unset;
+  }
+}
