@@ -54,6 +54,8 @@ MONGODB_URI=mongodb://localhost:27017/blog_edu
 MONGODB_NAME=blog_edu
 LOG_LEVEL=info
 CORS_ORIGIN=*
+SESSION_SECRET=your_secret_key
+SESSION_MAX_AGE=86400000
 ```
 
 4. Khởi động ứng dụng:
@@ -62,9 +64,57 @@ CORS_ORIGIN=*
 npm start
 ```
 
+## Docker
+
+Project đã hỗ trợ chạy bằng Docker với MongoDB container.
+
+1. Tạo file `.env` từ mẫu:
+
+```bash
+cp .env.example .env
+```
+
+2. Khởi động Docker:
+
+```bash
+docker compose up --build
+```
+
+3. Truy cập ứng dụng tại:
+
+```text
+http://localhost:3000
+```
+
+4. Dừng và gỡ container khi xong:
+
+```bash
+docker compose down
+```
+
+> Nếu muốn chạy với hot reload trong container, dùng:
+>
+> ```bash
+docker compose run --rm app npm run dev
+```
+
+5. Cấu hình môi trường mặc định trong Docker:
+
+```env
+NODE_ENV=development
+PORT=3000
+HOST=0.0.0.0
+MONGODB_URI=mongodb://mongo:27017/blog_edu
+MONGODB_NAME=blog_edu
+SESSION_SECRET=your_secret_key
+CORS_ORIGIN=*
+```
+
+
 ## Available Scripts
 
-- `npm start` — chạy ứng dụng bằng `nodemon`
+- `npm start` — chạy ứng dụng bằng `node src/index.js`
+- `npm run dev` — chạy ứng dụng bằng `nodemon` để phát triển
 - `npm run beauty` — format lại file bằng Prettier
 - `npm run watch` — build SCSS thành CSS và theo dõi thay đổi
 
